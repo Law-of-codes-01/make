@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="static/myc.css">
+</head>
+<body >
+  <div class="body">
+    <nav>
+      <ul>
+        <li class="crt"><button class="'but" >HOME</button></li>
+        <li class="crt"><a href='{{url_for("user.profile",username=current_user.username)}}'><button class="'but">PROFILE</button></a></li>
+        <li class="crt"><a href='{{url_for("post.post")}}'><button class="'but">POSTS</button></a></li>
+
+        <li class="crt"><a href='{{url_for("post.contact")}}'><button class="'but">CONTACT</button></a></li>
+        <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
+        {%if current_user%}
+          <li class="crt"><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a>></li>
+        {%else%}
+          <li class="crt"><a href="{{url_for('user.login')}}" ><button class="but">LOG IN</button></a></li>
+        {%endif%}
+      </ul>
+    </nav>
+    <div>
+      <button>
+        <h4>
+          <a href="{{url_for('main.locate')}}"><button>LOCATION</button></a>
+        </h4>
+      </button>
+    </div>
+
+    <div class="drcall">
+    <div>
+      <input width="500">
+    </div>
+    <div><button><a href="{{url_for('user.create')}}">Search</a></button></div>
+      <div class="drc">
+        <button>
+          <img src="static/cusservice.png">
+        </button>
+      <div>
+        <p>Customer Service Agent </p>
+      </div>
+    </div>
+    <div class="drc">
+        <button>
+          <a href="{{url_for('post.audpost')}}"> <img src="static/voicenote.png" width="100"></a> 
+        </button>
+      <div>
+        <p>Viocenote direction </p>
+      </div>
+    </div>
+    <div class="drc">
+        <button>
+          <a href="{{url_for('post.vpost')}}"><img src="static/videoicon.png" width="100"></a>
+        </button>
+      <div>
+        <p>Videocall direction </p>
+      </div>
+    </div>
+    <div class="drc">
+      <button>
+          <a href="{{url_for('post.ppost')}}"> <img src="static/gallery.png" width="100"></a> 
+      </button>
+    </div>
+    <div class="drc">
+        <button>
+            <img src="static/googlemaps.png" width="100">
+        </button>
+      <div>
+        <p>Google Map direction </p>
+      </div>
+    </div>
+    <div class="drc">
+        <button>
+            <img src="static/callicon.jpg" width="100">
+        </button>
+      <div>
+        <p>Direct call direction </p>
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

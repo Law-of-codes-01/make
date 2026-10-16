@@ -1,0 +1,22 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <h2>Verify Token</h2>
+        <div>
+            {{form.usertoken(placeholder='Valid Token')}}
+        </div>
+        <hr>
+        <div class="submit">
+            {{form.submit()}}
+        </div>
+        <div><a href="{{url_for('create')}}">Create Account</a></div>
+            {%if form.usertoken.errors%}
+                <div class="red">
+                    {%for error in form.useremail.errors%}
+                        {{error}}
+                    {%endfor%}
+                </div>
+            {%endif%}
+    </form>
+{%endblock%}

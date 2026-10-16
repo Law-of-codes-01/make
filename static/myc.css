@@ -1,0 +1,42 @@
+.crt{display: inline-block;text-align: center;}
+nav {display: flex; gap: 1rem; list-style: none;}
+
+.imgdiv{text-align: center;background-color: green;}
+.content_box{width: 50%;min-height: 280px; box-sizing: border-box;resize: vertical;}
+.updiv{text-align: center;background-color: green;}
+.body{background-color: rgb(234, 249, 203);background-image:url("www.jpg");}
+h2{text-align: center;}
+.red{color: red;}
+.list{background-color: black;display:inline-flex;padding-right:5%;}
+.lst{color: aliceblue;}
+.pst{text-align: center;}
+.name{display: inline-block;}
+.cont{display: inline-block;}
+.submit{text-align: center;}
+.sub{text-align: center;border-radius: 56%;}
+.image{align-items: center;border-radius:30%;background-color: aliceblue;
+padding-left:1%;padding-right:1%;}
+.imgdiv{text-align: center;border-radius:80%;}
+.drc{display: inline-block;padding-right:15%;align-items: center;padding-right: 15%;}
+.drcall{text-align: center;padding-top: 15%;}
+
+
+
+nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+nav ul {
+  display: flex;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: brown;
+}
+
+.crt {
+  text-align: center;
+}

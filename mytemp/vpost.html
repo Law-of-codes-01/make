@@ -1,0 +1,24 @@
+{%extends 'layout.html'%}
+{%block layout%}
+
+    <Div>
+        <li class="crt"><a href='{{url_for("cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
+
+    </Div>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <hr>
+
+    {% for p in post %}
+        <h3>{{ p.title }}</h3>
+        <div> 
+            <img src="{{url_for('static',filename='images/'+p.author.user_img)}}" width="50">
+            <a href="{{url_for('editpost',id=p.author.id)}}"><p>{{ p.author.username }}</p></a>
+        </div>
+        <h3>{{ p.title }}</h3>
+        <video controls width="400">
+            <source src="{{ url_for('static', filename='videos/' + p.media_type) }}" type="video/mp4">
+        </video>
+        <p>{{ p.content }}</p>
+    {% endfor %}
+    </form>
+{%endblock%}

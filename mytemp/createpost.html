@@ -1,0 +1,33 @@
+{%extends 'layout.html'%}
+{%block layout%}
+
+<form method="POST" enctype="multipart/form-data" action="">
+    {{ form.hidden_tag() }}
+    <div>
+        <div>
+            {{form.title.label()}}
+        </div>
+        <div>
+            {{form.title()}}
+        </div>
+        <hr>
+        <div>
+            {{form.media.label()}}
+        </div>
+        <div>
+            {{form.media()}}
+        </div>
+        <div>
+            {{form.content.label()}}
+        </div>
+        <div>
+            {{form.content(class="content_box")}}
+        </div>
+        <hr>
+        <div type="button">
+            {{form.submit()}}
+        </div>
+    </div>
+</form>
+
+{%endblock%}

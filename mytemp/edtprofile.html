@@ -1,0 +1,54 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <div><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a></div>
+    <form method="POST" enctype="multipart/form-data" action="">
+        {{ form.hidden_tag() }}
+        <div class="imgdiv">
+            <img class="image" src="{{form.img_f}}">
+        </div>
+        <div class="imgdiv">
+            {{form.pic.label()}} {{form.pic()}}
+        </div>
+
+        <div class="imgdiv">
+            <h3>{{form.username.label()}} {{form.username()}}</h3>
+            <h4>{{form.email.label()}} {{form.email()}}</h4>
+            <div><h5>Creator. 100k followers. 123k posts.</h5> </div>
+        </div>
+        <div class="imgdiv">
+            <h3>
+                {{form.bio.label()}}{{form.bio()}}
+            </h3>
+        </div>
+        <hr>
+        <div>
+            <p>PERSONAL DETAILS</p>
+            <div class="list">
+                <ul class="lst">
+                    <li>Location:{{form.country()}}</li>
+                    <li>DOB:{{form.country()}}</li>
+                    <li>Relationship:Single</li>
+                    <li>Country:{{current_user.country}}</li>
+                    <li>Gender:{{current_user.gender}}</li>
+                    <li>Contact:{{form.phone()}}</li>
+                    <li>.......</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="updiv">
+            {{form.submit()}}
+        </div>
+        <hr>
+        <div class="pst">
+            <p>POSTS</p>
+            <iframe>
+                Video
+            </iframe>
+            <div>
+                <img src="static/tech2.png">
+            </div>
+
+        </div>
+    </form>
+{%endblock%}

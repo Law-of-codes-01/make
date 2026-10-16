@@ -1,0 +1,77 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <div><a href="{{url_for('logout')}}" ><button class="'but">LOGOUT</button></a></div>
+
+    <form  method="POST" enctype="multipart/form-data" action="">
+        <div class="imgdiv">
+            <img class="image" src="{{img_f}}">
+        </div>
+
+        <div class="imgdiv">
+            <h3>{{current_user.firstname}} {{current_user.lastname}}</h3>
+            
+            <h4>{{current_user.email}}</h4>
+            <div><h5>Creator. 100k followers. 123k posts.</h5> </div>
+        </div>
+        <div class="imgdiv">
+            <h3>
+                BIO:software dv from havard
+            </h3>
+        </div>
+
+        <hr>
+        <div>
+            <p>PERSONAL DETAILS</p>
+            <div class="list">
+                <ul class="lst">
+                    <li>Location:{{current_user.country}}</li>
+                    <li>DOB:{{current_user.country}}</li>
+                    <li>Relationship:Single</li>
+                    <li>Country:{{current_user.country}}</li>
+                    <li>Gender:{{current_user.gender}}</li>
+                    <li>.....</li>
+                    <li>.......</li>
+                </ul>
+            </div>
+        </div>
+        <div class="pst">
+            <p>POSTS</p>
+            <iframe>
+                Video
+            </iframe>
+            <div>
+                <img src="static/tech2.png">
+            </div>
+
+        </div>
+    <Div>
+
+    </Div>
+
+    <hr>
+    {%for p in form%}
+        <div>
+            <img src="{{ url_for('static', filename='images/' + p.author.user_img) }}" width="50">
+            <p>{{ p.author.username }}</p>
+
+        </div>
+    
+        {% if p.media_path == "mp4" %}
+            
+            <video controls width="400">
+                <source src="{{ url_for('static', filename='videos/' + p.media_type) }}">
+            </video>
+        {%elif p.media_path=="mp3"%}
+            <video controls width="400">
+                <source src="{{ url_for('static', filename='audios/' + p.media_type) }}" type="video/mp4">
+            </video>
+        {% else%}
+            <img src="{{ url_for('static', filename='images/' + p.media_type) }}" width="400">
+        {% endif %}
+
+        <a href="{{url_for('mainpost',id=p.id)}}"><h3>{{ p.title }}</h3></a>
+        <p>{{ p.content }}</p>
+        <hr>
+    {%endfor%}
+    </form>
+{%endblock%}

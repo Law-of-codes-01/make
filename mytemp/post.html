@@ -1,0 +1,49 @@
+{%extends 'layout.html'%}
+{%block layout%}
+
+    <Div>
+        <li class="crt"><a href='{{url_for("post.cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
+
+    </Div>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <hr>
+
+    <div>
+        <a href="{{ url_for('post.cpost') }}" class="but">CREATE POST</a>
+    </div>
+    <hr>
+    {%for p in post.items%}
+        
+        <div>
+            <img src="{{ url_for('static', filename='images/' + p.author.user_img) }}" width="50">
+            <a href='{{url_for("user.profile",username=p.author.username)}}'><p>{{ p.author.username }}</p></a>
+
+        </div>
+    
+        {% if p.media_path == "mp4" %}
+            
+            <video controls width="400">
+                <source src="{{ url_for('static', filename='videos/' + p.media_type) }}">
+            </video>
+        {%elif p.media_path=="mp3" or p.media_path=="m4a" %}
+            <audio controls width="400">
+                <source src="{{ url_for('static', filename='audios/' + p.media_type) }}" type="video/mp4">
+            </audio>
+        {% else%}
+            <img src="{{ url_for('static', filename='images/' + p.media_type) }}" width="400">
+        {% endif %}
+
+        <a href="{{url_for('post.mainpost',id=p.id)}}"><h3>{{ p.title }}</h3></a>
+        <p>{{ p.content }}</p>
+        <hr>
+    {%endfor%}
+    {%for pg in post.iter_pages()%}  
+        {%if pg%}
+            <a href="{{url_for('post.post',p=pg)}}">{{pg}}</a>
+        {%else%}
+            .....
+        {%endif%}
+    {%endfor%}
+    </form>
+
+{%endblock%}

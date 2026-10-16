@@ -1,0 +1,22 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <h2>Log in</h2>
+        <div>
+            {{form.email(placeholder='Email address')}}
+        </div>
+        <hr>
+        <div class="submit">
+            {{form.submit()}}
+        </div>
+        <div><a href="{{url_for('user.create')}}">Create Account</a></div>
+            {%if form.email.errors%}
+                <div class="red">
+                    {%for error in form.useremail.errors%}
+                        {{error}}
+                    {%endfor%}
+                </div>
+            {%endif%}
+    </form>
+{%endblock%}

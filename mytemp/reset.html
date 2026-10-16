@@ -1,0 +1,20 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <h2>{{title}}</h2>
+
+        <hr>
+
+        <div>
+            {{form.userpass(placeholder='Input Password')}}
+        </div>
+        <hr>
+        <div>
+            {{form.userc_pass(placeholder='Confirm password')}}
+        </div>
+        <div class="submit">
+            {{form.submit()}}
+        </div>
+
+{%endblock%}

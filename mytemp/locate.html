@@ -1,0 +1,19 @@
+{%extends 'layout.html'%}
+{%block layout%}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <h2>Location</h2>
+        <div>
+            {{form.country(placeholder='Country')}}
+        </div>
+        <hr>
+        <div>
+            {{form.state(placeholder='State')}}
+        </div>
+
+        <hr>
+        <div class="submit">
+            {{form.submit()}}
+        </div>
+    </form>
+{%endblock%}

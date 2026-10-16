@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block layout %}
+
+
+
+    {% if current_user.is_authenticated and post.author == current_user %}
+        <div>
+            <a href="{{ url_for('post.editpost' ,id=post.id)}}" class="but"><button type="submit">EDIT POST</button></a>
+        </div>
+        <form action="{{ url_for('post.deletepost', id=post.id) }}" method="POST"
+            onsubmit="return confirm('Delete this post?');">
+            <button type="submit">DELETE POST</button>
+        </form>
+    {%endif%}
+        {% if post.media_path == "mp4" %}
+            <video controls width="400">
+                <source src="{{ url_for('static', filename='videos/' + post.media_type) }}">
+            </video>
+        {%elif post.media_path == "mp3" %}
+            <audio controls>
+                <source src="{{ url_for('static', filename='audios/' + post.media_path) }}">
+            </audio>
+        {% else%}
+        <img src="{{ url_for('static', filename='images/' +post.media_type) }}" width="400">
+
+        <hr>
+        <div>
+            <img src="{{ url_for('static', filename='images/' + post.author.user_img) }}" width="50">
+            <p>{{ post.author.username }}</p>
+        </div>
+        {% endif %}
+
+    <h3>{{ post.title }}</h3>
+    <p>{{post.content }}</p>
+    <hr>
+
+{% endblock %}
