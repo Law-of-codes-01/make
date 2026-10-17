@@ -1,6 +1,5 @@
 
-
-from __init__ import create_app, create_db
+from Directme import create_app, create_db
 
 app = create_app()
 
