@@ -84,7 +84,7 @@ def editprofile():
             current_user.phone=form.phone.data
 
             db.session.commit()
-            return redirect(url_for('user.profile'))
+            return redirect(url_for('user.profile',username=current_user.username))
         form.username.data=current_user.username
         form.email.data=current_user.email
         form.bio.data=current_user.bio
