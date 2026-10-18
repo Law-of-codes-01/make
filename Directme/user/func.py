@@ -14,12 +14,12 @@ def save_pic(s_pic):
     return pic_nm
 
 def send_mail(user):
-    msg = Message(
+    if os.environ.get("DISABLE_EMAIL") == "1":
+    return     msg = Message(
         subject=f"Welcome  to Describeit {user.useremail.data}",
         recipients=[user.useremail.data],
         body=f" {user.username.data}Make a perfect description for perfect reward")
-    mail.send(msg)
-    return "Email sent!"
+        mail.send(msg)
 
 def send_email(user):
     token=user.get_token()
