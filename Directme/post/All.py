@@ -58,7 +58,7 @@ def editpost(id):
             post.content=form.content.data
             post.title=form.title.data
             db.session.commit()
-            return redirect(url_for("posts.post"))
+            return redirect(url_for("post.post"))
         form.content.data=post.content
         form.title.data=post.title
         return render_template("editpost.html",post=post,form=form)
