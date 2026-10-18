@@ -15,7 +15,7 @@ def create():
         return redirect(url_for('main.home'))
     form=MySignup_form()
     if form.validate_on_submit():
-        send_mail(form)
+        # send_mail(form)
         hash_pass=hsh.generate_password_hash(form.userpass.data).decode("utf-8")
         user=User(firstname=form.firstname.data,lastname=form.lastname.data,
                   gender=form.usergender.data,username=form.username.data,
