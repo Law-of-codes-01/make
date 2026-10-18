@@ -1,5 +1,5 @@
 
-from __init__ import create_app, db
+from __init__ import create_app, db,create_db
 
 law=create_app()
 
