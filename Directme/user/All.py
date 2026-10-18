@@ -59,7 +59,7 @@ def logout():
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    image_file = url_for("make/static", filename="images/" + user.user_img)
+    image_file = url_for("static", filename="images/" + user.user_img)
     post= (Post.query
              .filter_by(user_id=user.id)
              .order_by(Post.date_posted.desc())
@@ -90,7 +90,7 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
-        image_file=url_for("make/static",filename="images/"+current_user.user_img)
+        image_file=url_for("static",filename="images/"+current_user.user_img)
         print(form.errors)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 
