@@ -23,11 +23,11 @@ def cpost():
                 db.session.commit()
                 print(post.media_path)
                 if pth[-1].lower()=="mp3" or pth[-1].lower()=="m4a":
-                    return redirect(url_for("posts.audpost"))
+                    return redirect(url_for("post.audpost"))
                 elif pth[-1].lower()=="mp4"   :
-                    return redirect(url_for("posts.vpost"))
+                    return redirect(url_for("post.vpost"))
                 else:
-                    return redirect(url_for("posts.ppost"))
+                    return redirect(url_for("post.ppost"))
         return render_template("createpost.html",form=form)
 
     
