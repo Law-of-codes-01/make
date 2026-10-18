@@ -65,7 +65,7 @@ def profile(username):
              .order_by(Post.date_posted.desc())
              .all())
     print(post[0])
-    return render_template("profile.html", user=user, img_f=image_file, posts=post)
+    return render_template("profile.html", users=user, img_f=image_file, posts=post)
 
 
 @user.route('/editprofile',methods=["GET","POST"])
