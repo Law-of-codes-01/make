@@ -15,6 +15,5 @@ class Lawconfig:
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get("Describeit_email")
->>>>>>> a4338c45e2bd5e111e2219fc24642992f502e041
     MAIL_PASSWORD = os.environ.get("Describeit_pass")
     MAIL_DEFAULT_SENDER = os.environ.get("Describeit_email")
