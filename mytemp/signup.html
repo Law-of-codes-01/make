@@ -2,95 +2,94 @@
 {% block layout %}
     <form method="post" action="">
         {{ form.hidden_tag() }}
-        <h2>Create Account</h2>
-        <div class="name">
-        {{form.firstname.label()}}.<br>
-        {{form.firstname(class="name",placeholder="firstname")}}
-        </div>
-        <hr>
-        <div class="name">
-        {{form.lastname.label()}}.<br>
-        {{form.lastname(class="name",placeholder="lastname")}}
-        </div>
-        <hr>
-
-        <div class="name">
-        {{form.username.label()}}.<br>
-        {{form.username(class="name",placeholder="unique name")}}
-        </div>       
-         <hr>
-            {%if form.username.errors%}
-                <div class="red">
-                    {%for error in form.username.errors%}
-                        {{error}}
-                    {%endfor%}
-                </div>
-            {%endif%}
-
+        <div class='create'>
+            <h2>Create Account</h2>
+            <div class="firstname">
+            {{form.firstname.label()}}
+            {{form.firstname(placeholder="firstname")}}
+            </div>
+            <div class="lastname">
+            {{form.lastname.label()}}
+            {{form.lastname(placeholder="lastname")}}
+            </div>
             <hr>
-        <div class="cont">
-            {{form.useremail.label()}}.<br>
-            {{form.useremail(class="name",placeholder="Email address")}}
-        </div>
-        <hr>
-            {%if form.useremail.errors%}
-                <div class="red">
-                    {%for error in form.useremail.errors%}
-                        {{error}}
-                    {%endfor%}
-                </div>
-            {%endif%}
-        <div class="cont">
-            {{form.userphone.label()}}.<br>
-            {{form.userphone(class="name",placeholder="Phone Number")}}
-        </div>
+
+            <div class="firstname">
+            {{form.username.label()}}.<br>
+            {{form.username(class="name",placeholder="unique name")}}
+            </div>  
+            <div class="firstname">
+                {{form.usergender.label()}}.<br>
+                {{form.usergender(class="name",placeholder="Male/Female")}}
+            </div>     
+            <hr>
+                {%if form.username.errors%}
+                    <div class="red">
+                        {%for error in form.username.errors%}
+                            {{error}}
+                        {%endfor%}
+                    </div>
+                {%endif%}
+
                 <hr>
-            {%if form.userphone.errors%}
-                <div class="red">
-                    {%for error in form.userphone.errors%}
-                        {{error}}
-                    {%endfor%}
-                </div>
-            {%endif%}
-        <div><small>Input valid contact information to get notifications from us</small>
-        </div>
+            <div class="firstname">
+                {{form.useremail.label()}}.<br>
+                {{form.useremail(class="name",placeholder="Email address")}}
+            </div>
+                {%if form.useremail.errors%}
+                    <div class="red">
+                        {%for error in form.useremail.errors%}
+                            {{error}}
+                        {%endfor%}
+                    </div>
+                {%endif%}
+            <div class="lastname">
+                {{form.userphone.label()}}.<br>
+                {{form.userphone(class="name",placeholder="Phone Number")}}
+            </div>
+                    <hr>
+                {%if form.userphone.errors%}
+                    <div class="red">
+                        {%for error in form.userphone.errors%}
+                            {{error}}
+                        {%endfor%}
+                    </div>
+                {%endif%}
+            <div><small>Input valid contact information to get notifications from us</small>
+            </div>
             <hr>
-        <div>
-            {{form.usergender.label()}}.<br>
-            {{form.usergender(class="name",placeholder="Male/Female")}}
-        </div>
-        <hr>
-        <div class="cont">
-            {{form.usercountry.label()}}.<br>
-            {{form.usercountry(class="name",placeholder="Country")}}
-        </div>
-            <hr>
-        <div class="cont">
-            {{form.userpass.label()}}.<br>
-            {{form.userpass(class="name",placeholder="Password")}}
-        </div>
-        <div class="cont">
-            {{form.userc_pass.label()}}.<br>
-            {{form.userc_pass(class="name",placeholder="Confirm Password")}}
-        </div>
-            <hr>
-            {%if form.userpass.errors%}
-                <div class="red">
-                    {%for error in form.userpass.errors%}
-                        {{error}}
-                    {%endfor%}
-                </div>
-            {%endif%}
-            <hr>
-        <div class="submit">
-            {{form.submit()}}
-        </div>
-        <div class="submit">
-            <span><a href='{{url_for("user.login")}}'>I already have an account</a></span>
-        </div>
+            <div class="cont">
+                {{form.usercountry.label()}}.<br>
+                {{form.usercountry(class="name",placeholder="Country")}}
+            </div>
+                <hr>
+            <div class="cont">
+                {{form.userpass.label()}}.<br>
+                {{form.userpass(class="name",placeholder="Password")}}
+            </div>
+            <div class="cont">
+                {{form.userc_pass.label()}}.<br>
+                {{form.userc_pass(class="name",placeholder="Confirm Password")}}
+            </div>
+                <hr>
+                {%if form.userpass.errors%}
+                    <div class="red">
+                        {%for error in form.userpass.errors%}
+                            {{error}}
+                        {%endfor%}
+                    </div>
+                {%endif%}
+                <hr>
+            <div class="submit">
+                {{form.submit()}}
+            </div>
+            <div class="submit">
+                <span><a href='{{url_for("user.login")}}'>I already have an account</a></span>
+            </div>
 
-        <div class="sub">
-            <img src="{{ url_for('static', filename='tech2.png') }}">
+            <div class="sub">
+                <img src="{{ url_for('static', filename='tech2.png') }}">
+            </div>
         </div>
     </form>
 {%endblock%}

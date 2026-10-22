@@ -1,6 +1,14 @@
 .crt{display: inline-block;text-align: center;}
 nav {display: flex; gap: 1rem; list-style: none;}
 
+
+.create{text-align: center;display: flexbox;}
+.firstname{display: inline-block;padding: 20px;}
+.lastname{display: inline-block;padding: 20px;}
+.numcont{display:inline;text-align:left;gap: 5px;}
+.callcont{text-align:center;display: flex; gap: 15px;}
+.call{display: inline-flex;padding: 20px;}
+.num{flex: 1;padding: 20px;}
 .imgdiv{text-align: center;background-color: green;}
 .content_box{width: 50%;min-height: 280px; box-sizing: border-box;resize: vertical;}
 .updiv{text-align: center;background-color: green;}

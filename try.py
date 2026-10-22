@@ -1,9 +1,6 @@
+from __init__ import create_app,create_db,db
 
-
-from __init__ import create_app, create_db
-
-app = create_app()
-
-if __name__ == "__main__":
-    create_db()
-    app.run(debug=True)
+law=create_app()
+create_db()
+if __name__=='__main__':
+    law.run(debug=True)

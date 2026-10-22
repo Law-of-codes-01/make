@@ -78,6 +78,11 @@ class EditProfile(FlaskForm):
     submit=SubmitField("Update")
 
 
+class MyContact_form(FlaskForm):
+    phone=StringField("Phone Number",validators=[DataRequired()])
+    whatsapp=StringField("Whatsapp link",validators=[DataRequired()])
+    submit=SubmitField('Save')
+
 class MyReq_form(FlaskForm):
     email=StringField("Update Email",
                       validators=[DataRequired(),Email(),Length(min=4,max=20)])

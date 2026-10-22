@@ -17,11 +17,6 @@ def home():
 def index():
     return render_template("index.html")
 
-@main.route('/contact',methods=["GET","POST"])
-def contact():
-    
-    return render_template("contact.html")
-
 
 @main.route('/locate',methods=["GET","POST"])
 def locate():
@@ -29,3 +24,4 @@ def locate():
     if form.validate_on_submit():
         return redirect(url_for('main.home'))
     return render_template("locate.html",title="Mywebsite",form=form)
+    

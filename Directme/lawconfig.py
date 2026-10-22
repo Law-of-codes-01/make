@@ -2,7 +2,7 @@ import os
 
 class Lawconfig():
     SECRET_KEY=os.environ.get("Describeit_secrete")
-    SQLALCHEMY_DATABASE_URI=os.environ.get('lawdb')
+    SQLALCHEMY_DATABASE_URI=os.environ.get('sqlite')
     MAIL_SERVER="smtp.gmail.com"
     MAIL_PORT=465
     MAIL_USE_TLS=False

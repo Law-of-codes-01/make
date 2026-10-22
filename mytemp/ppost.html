@@ -2,7 +2,7 @@
 {%block layout%}
 
     <Div>
-        <li class="crt"><a href='{{url_for("cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
+        <li class="crt"><a href='{{url_for("post.cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
 
     </Div>
     <form method="POST" enctype="multipart/form-data" action="">
@@ -12,7 +12,7 @@
         <h3>{{ p.title }}</h3>
         <div> 
             <img src="{{url_for('static',filename='images/'+p.author.user_img)}}" width="50">
-            <a href="{{url_for('editpost',id=p.author.id)}}"><p>{{ p.author.username }}</p></a>
+            <a href="{{url_for('post.editpost',id=p.author.id)}}"><p>{{ p.author.username }}</p></a>
         </div>
         
             

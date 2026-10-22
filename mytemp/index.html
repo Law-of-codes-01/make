@@ -12,7 +12,7 @@
         <ul>
           <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
           <li class="crt"><a href='{{url_for("user.profile",username=current_user.username)}}'><button class="'but">PROFILE</button></a></li>
-          <li class="crt"><a href='{{url_for("main.contact")}}'><button class="'but">CONTACT</button></a></li>
+          <li class="crt"><a href='{{url_for("user.contact",username=current_user.username)}}'><button class="'but">CONTACT</button></a></li>
           <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
           <li class="crt"><a href="{{url_for('user.logout')}}" ><button class="but">LOG OUT</button></a></li>
         </ul>
@@ -20,7 +20,6 @@
         <ul>
           <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
           <li class="crt"><a href='{{url_for("user.create")}}'><button class="'but">CREATE ACCOUNT</button></a></li>   
-          <li class="crt"><a href='{{url_for("main.contact")}}'><button class="'but">CONTACT</button></a></li>
           <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
           <li class="crt"><a href="{{url_for('user.login')}}" ><button class="but">LOG IN</button></a></li>
         </ul>

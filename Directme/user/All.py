@@ -2,7 +2,7 @@
 from flask_login import current_user,login_required,logout_user,login_user
 from __init__ import hsh
 from flask import render_template,redirect,url_for,flash,abort,Blueprint
-from Directme.user.form import MySignin_form,MySignup_form,EditProfile,MyReq_form,MyReset_form
+from Directme.user.form import MySignin_form,MySignup_form,EditProfile,MyReq_form,MyReset_form,MyContact_form
 from db_structure import db,User,Post
 from Directme.user.func import send_email,send_mail,save_pic
 from flask_login import login_required
@@ -15,7 +15,7 @@ def create():
         return redirect(url_for('main.home'))
     form=MySignup_form()
     if form.validate_on_submit():
-        send_mail(form)
+        # send_mail(form)
         hash_pass=hsh.generate_password_hash(form.userpass.data).decode("utf-8")
         user=User(firstname=form.firstname.data,lastname=form.lastname.data,
                   gender=form.usergender.data,username=form.username.data,
@@ -55,17 +55,24 @@ def logout():
 
 
 
-@user.route('/profile/<string:username>')
+@user.route('/profile/<string:username>',methods=["GET","POST"])
 @login_required
 def profile(username):
+    cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
     image_file = url_for("static", filename="images/" + user.user_img)
-    post= (Post.query
-             .filter_by(user_id=user.id)
-             .order_by(Post.date_posted.desc())
-             .all())
-    print(post[0])
-    return render_template("profile.html", user=user, img_f=image_file, posts=post)
+    if user:
+        # if user.whatsappnum==None or user.whatsapp==None:
+        #     return redirect(url_for('user.contact',username=username))
+        whatsappnum=user.whatsappnum
+        whatsapp=user.whatsapp
+        post= (Post.query
+                .filter_by(user_id=user.id)
+                .order_by(Post.date_posted.desc())
+                .all())
+
+        return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
+    return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
 
 
 @user.route('/editprofile',methods=["GET","POST"])
@@ -127,3 +134,35 @@ def reset(token):
         return redirect(url_for("user.login"))
 
     return render_template("reset.html", form=form)
+
+@user.route('/contact/<string:username>',methods=["GET","POST"])
+def contact(username):
+    form=MyContact_form() 
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first_or_404()
+        if user:
+            user.whatsappnum=form.phone.data
+            user.whatsapp=form.whatsapp.data
+            db.session.commit()
+        return redirect(url_for('main.home'))
+    print(form.errors)
+
+    return render_template("contact.html",form=form)
+
+
+@user.route('/editcontact',methods=["GET","POST"])
+def editcontact():
+
+    if current_user.is_authenticated:
+        form=MyContact_form()
+        if form.validate_on_submit():
+            current_user.whatsappnum=form.phone.data
+            current_user.whatsapp=form.whatsapp.data
+
+            db.session.commit()
+            return redirect(url_for('user.profile',username=current_user.username))
+        form.phone.data=current_user.whatsappnum
+
+        form.whatsapp.data=current_user.whatsapp
+        print(form.errors)
+        return render_template("editcontact.html",form=form)

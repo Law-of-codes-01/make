@@ -23,6 +23,8 @@ class User(db.Model, UserMixin):
     country = db.Column(db.String(200), nullable=False)
     gender=db.Column(db.String(10), nullable=True)
     bio=db.Column(db.String(200), nullable=True)
+    whatsapp=db.Column(db.String(15), unique=True, nullable=True)
+    whatsappnum=db.Column(db.String(15), unique=True, nullable=True)
     user_img = db.Column(db.String(3000), nullable=False, default='default.jpg')
     posts = db.relationship('Post', backref='author', lazy=True)
 
