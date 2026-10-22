@@ -5,7 +5,7 @@ import os
 class Lawconfig:
     SECRET_KEY = os.environ.get("Describeit_secrete")
 
-    _uri = os.environ.get("lawdb", "sqlite:///site.db")
+    _uri = os.environ.get("lawdb")
     if _uri.startswith("postgres://"):
         _uri = _uri.replace("postgres://", "postgresql://", 1)
     SQLALCHEMY_DATABASE_URI = _uri
