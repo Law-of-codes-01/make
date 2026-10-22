@@ -91,7 +91,7 @@ def editprofile():
             current_user.phone=form.phone.data
 
             db.session.commit()
-            return redirect(url_for('user.profile'))
+            return redirect(url_for('user.profile',username=current_user.username))
         form.username.data=current_user.username
         form.email.data=current_user.email
         form.bio.data=current_user.bio
@@ -134,6 +134,7 @@ def reset(token):
         return redirect(url_for("user.login"))
 
     return render_template("reset.html", form=form)
+<<<<<<< HEAD
 
 @user.route('/contact/<string:username>',methods=["GET","POST"])
 def contact(username):
@@ -166,3 +167,5 @@ def editcontact():
         form.whatsapp.data=current_user.whatsapp
         print(form.errors)
         return render_template("editcontact.html",form=form)
+=======
+>>>>>>> a4338c45e2bd5e111e2219fc24642992f502e041

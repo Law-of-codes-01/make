@@ -23,11 +23,11 @@ def cpost():
                 db.session.commit()
                 print(post.media_path)
                 if pth[-1].lower()=="mp3" or pth[-1].lower()=="m4a":
-                    return redirect(url_for("posts.audpost"))
+                    return redirect(url_for("post.audpost"))
                 elif pth[-1].lower()=="mp4"   :
-                    return redirect(url_for("posts.vpost"))
+                    return redirect(url_for("post.vpost"))
                 else:
-                    return redirect(url_for("posts.ppost"))
+                    return redirect(url_for("post.ppost"))
         return render_template("createpost.html",form=form)
 
     
@@ -58,7 +58,7 @@ def editpost(id):
             post.content=form.content.data
             post.title=form.title.data
             db.session.commit()
-            return redirect(url_for("posts.post"))
+            return redirect(url_for("post.post"))
         form.content.data=post.content
         form.title.data=post.title
         return render_template("editpost.html",post=post,form=form)
