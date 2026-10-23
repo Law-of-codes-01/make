@@ -60,7 +60,7 @@ def logout():
 def profile(username):
     cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
-    image_file = url_for("static", filename="images/" + user.user_img)
+    # image_file = url_for("static", filename="images/" + user.user_img)
     if user:
         # if user.whatsappnum==None or user.whatsapp==None:
         #     return redirect(url_for('user.contact',username=username))
@@ -82,7 +82,8 @@ def editprofile():
         form=EditProfile()
         if form.validate_on_submit():
             if form.pic.data:
-                pcs=save_pic(form.pic.data)
+                pcs=save_pic(form.Pic.data)
+                db.session.commit()
                 current_user.user_img=pcs
             current_user.username=form.username.data
             current_user.email=form.email.data
@@ -134,7 +135,7 @@ def reset(token):
         return redirect(url_for("user.login"))
 
     return render_template("reset.html", form=form)
-<<<<<<< HEAD
+
 
 @user.route('/contact/<string:username>',methods=["GET","POST"])
 def contact(username):
@@ -167,5 +168,3 @@ def editcontact():
         form.whatsapp.data=current_user.whatsapp
         print(form.errors)
         return render_template("editcontact.html",form=form)
-=======
->>>>>>> a4338c45e2bd5e111e2219fc24642992f502e041

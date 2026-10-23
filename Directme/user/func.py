@@ -4,14 +4,26 @@ import secrets
 from flask import url_for,current_app
 from __init__ import mail
 from flask_mail import Message
+import cloudinary
+import cloudinary.uploader
+
+
+
+cloudinary.config(
+    cloud_name=os.environ.get("cloud_id"),
+    api_key=os.environ.get("cloud_Api_Key"),
+    api_secret=os.environ.get("cloud_Api_secrete"),
+    secure=True
+)
 
 def save_pic(s_pic):
-    rnd_hex=secrets.token_hex(8)
-    _,pth=os.path.splitext(s_pic.filename)
-    pic_nm=rnd_hex + pth
-    pic_path=os.path.join(current_app.root_path,'static/images',pic_nm)
-    s_pic.save(pic_path)
-    return pic_nm
+    result = cloudinary.uploader.upload(
+        s_pic,
+        public_id=secrets.token_hex(8),
+        folder="profile_pics",
+        resource_type="auto",
+    )
+    return result["secure_url"]
 
 def send_mail(user):
     msg = Message(
