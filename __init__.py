@@ -35,7 +35,6 @@ def create_app(law_class=Lawconfig):
 def create_db():
     law=create_app()
     with law.app_context():
-        db.drop_all()
         db.create_all()
 
 
