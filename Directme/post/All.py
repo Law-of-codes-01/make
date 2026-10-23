@@ -16,7 +16,7 @@ def cpost():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             if form.media.data:
-                pcs=save_med(form.Pic.data)
+                pcs=save_med(form.media.data)
                 db.session.commit()
                 pth=pcs.split('.')
                 post=Post(title=form.title.data,content=form.content.data, media_type=pcs,media_path=pth[-1], author=current_user)
