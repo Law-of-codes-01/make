@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     bio=db.Column(db.String(200), nullable=True)
     whatsapp=db.Column(db.String(15), unique=True, nullable=True)
     whatsappnum=db.Column(db.String(15), unique=True, nullable=True)
-    user_img = db.Column(db.String(3000), nullable=False, default='default.jpg')
+    user_img = db.Column(db.String(3000), nullable=False, default='Default.jpg')
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def get_token(self):
