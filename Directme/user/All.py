@@ -98,7 +98,7 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
-        image_file=url_for("static",filename="images/"+current_user.user_img)
+        image_file=https://res.cloudinary.com/gy6px9jz/image/upload/f_auto/q_auto/profile_pics/+current_user.user_img
         print(form.errors)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 
