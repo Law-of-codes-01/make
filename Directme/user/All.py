@@ -60,7 +60,7 @@ def logout():
 def profile(username):
     cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
-    image_file = url_for("static", filename="images/" + user.user_img)
+    image_file = https://res.cloudinary.com/gy6px9jz/image/upload/f_auto/q_auto/profile_pics/+ user.user_img
     if user:
         # if user.whatsappnum==None or user.whatsapp==None:
         #     return redirect(url_for('user.contact',username=username))
