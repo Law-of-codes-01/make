@@ -14,18 +14,18 @@
     {%endif%}
         {% if post.media_path == "mp4" %}
             <video controls width="400">
-                <source src="{{ url_for('static', filename='videos/' + post.media_type) }}">
+                <source src="{{post.media_type}}">
             </video>
         {%elif post.media_path == "mp3" %}
             <audio controls>
-                <source src="{{ url_for('static', filename='audios/' + post.media_path) }}">
+                <source src="{{post.media_path}}">
             </audio>
         {% else%}
-        <img src="{{ url_for('static', filename='images/' +post.media_type) }}" width="400">
+        <img src="{{post.media_type}}" width="400">
 
         <hr>
         <div>
-            <img src="{{ url_for('static', filename='images/' + post.author.user_img) }}" width="50">
+            <img src="{{post.author.user_img}}" width="50">
             <p>{{ post.author.username }}</p>
         </div>
         {% endif %}

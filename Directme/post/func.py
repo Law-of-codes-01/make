@@ -10,7 +10,7 @@ import cloudinary.uploader
 cloudinary.config(
     cloud_name=os.environ.get("cloud_id"),
     api_key=os.environ.get("cloud_Api_Key"),
-    api_secret=os.environ.get("cloud_Api_secrete"),
+    api_secret=os.environ.get("cloud_Api_secret"),
     secure=True
 )
 

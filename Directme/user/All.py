@@ -60,7 +60,7 @@ def logout():
 def profile(username):
     cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
-    # image_file = url_for("static", filename="images/" + user.user_img)
+    image_file =f"{user.user_img}"
     if user:
         # if user.whatsappnum==None or user.whatsapp==None:
         #     return redirect(url_for('user.contact',username=username))
@@ -70,7 +70,7 @@ def profile(username):
                 .filter_by(user_id=user.id)
                 .order_by(Post.date_posted.desc())
                 .all())
-
+        print(image_file)
         return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
     return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
 
@@ -82,7 +82,7 @@ def editprofile():
         form=EditProfile()
         if form.validate_on_submit():
             if form.pic.data:
-                pcs=save_pic(form.Pic.data)
+                pcs=save_pic(form.pic.data)
                 db.session.commit()
                 current_user.user_img=pcs
             current_user.username=form.username.data
@@ -98,7 +98,7 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
-        image_file=url_for("static",filename="images/"+current_user.user_img)
+        image_file=f"{current_user.user_img}"
         print(form.errors)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 

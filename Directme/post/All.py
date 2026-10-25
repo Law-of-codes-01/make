@@ -16,13 +16,13 @@ def cpost():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             if form.media.data:
-                pcs=save_med(form.Pic.data)
+                pcs=save_med(form.media.data)
                 db.session.commit()
                 pth=pcs.split('.')
                 post=Post(title=form.title.data,content=form.content.data, media_type=pcs,media_path=pth[-1], author=current_user)
                 db.session.add(post)
                 db.session.commit()
-                print(post.media_path)
+                print(post.media_type)
                 if pth[-1].lower()=="mp3" or pth[-1].lower()=="m4a":
                     return redirect(url_for("post.audpost"))
                 elif pth[-1].lower()=="mp4"   :
