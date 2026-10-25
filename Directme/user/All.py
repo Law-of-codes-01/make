@@ -60,7 +60,11 @@ def logout():
 def profile(username):
     cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
+<<<<<<< HEAD
     image_file =f"{user.user_img}"
+=======
+    image_file =url_for("static", filename="images/" + user.user_img)
+>>>>>>> 9c54b842a329580c748179fe398cfc18aac95981
     if user:
         # if user.whatsappnum==None or user.whatsapp==None:
         #     return redirect(url_for('user.contact',username=username))
@@ -98,7 +102,11 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
+<<<<<<< HEAD
         image_file=f"{current_user.user_img}"
+=======
+        image_file= f"https://res.cloudinary.com/gy6px9jz/image/upload/f_auto/q_auto/profile_pics/+{current_user.user_img}"
+>>>>>>> 9c54b842a329580c748179fe398cfc18aac95981
         print(form.errors)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 
