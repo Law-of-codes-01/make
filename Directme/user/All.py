@@ -99,7 +99,7 @@ def editprofile():
         form.country.data=current_user.country
         form.phone.data=current_user.phone
         image_file=f"{current_user.user_img}"
-        print(form.errors)
+        print(image_file)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 
 @user.route('/passwordreset',methods=["GET","POST"])

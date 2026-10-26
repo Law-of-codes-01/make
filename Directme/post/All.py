@@ -115,5 +115,5 @@ def deletepost(id):
             return abort(403) 
         db.session.delete(post)
         db.session.commit()
-        return redirect(url_for("posts.post"))
+        return redirect(url_for("post.post"))
     return render_template("mainpost.html",post=post)

@@ -67,14 +67,14 @@
         {% if p.media_path.split('.')[-1] == "mp4" %}
             
             <video controls width="400">
-                <source src="{{ url_for('static', filename='videos/' + p.media_type) }}">
+                <source src="{{p.media_type}}">
             </video>
         {%elif p.media_path.split('.')[-1]=="mp3"%}
             <video controls width="400">
-                <source src="{{ url_for('static', filename='audios/' + p.media_type) }}" type="video/mp4">
+                <source src="{{p.media_type}}" type="video/mp4">
             </video>
         {% else%}
-            <img src="{{ url_for('static', filename='images/' + p.media_type) }}" width="400">
+            <img src="{{p.media_type}}" width="400">
         {% endif %}
 
         <a href="{{url_for('post.mainpost',id=p.id)}}"><h3>{{ p.title }}</h3></a>

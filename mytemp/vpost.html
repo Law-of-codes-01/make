@@ -11,12 +11,12 @@
     {% for p in post %}
         <h3>{{ p.title }}</h3>
         <div> 
-            <img src="{{url_for('static',filename='images/'+p.author.user_img)}}" width="50">
+            <img src="{{p.author.user_img}}" width="50">
             <a href="{{url_for('post.editpost',id=p.author.id)}}"><p>{{ p.author.username }}</p></a>
         </div>
         <h3>{{ p.title }}</h3>
         <video controls width="400">
-            <source src="{{ url_for('static', filename='videos/' + p.media_type) }}" type="video/mp4">
+            <source src="{{ p.media_type }}" type="video/mp4">
         </video>
         <p>{{ p.content }}</p>
     {% endfor %}
