@@ -2,6 +2,23 @@
 
 {% extends 'layout.html' %}
 {% block layout %}
+  <div class="body">
+    <nav>
+      <ul>
+        <li class="crt"><button class="'but" >HOME</button></li>
+        <li class="crt"><a href='{{url_for("post.post")}}'><button class="'but">POSTS</button></a></li>
+
+        <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
+        {%if current_user%}
+          <li class="crt"><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a>></li>
+          <li class="crt"><a href='{{url_for("user.contact",username=current_user.username)}}'><button class="'but">CONTACT</button></a></li>
+
+          {%else%}
+          <li class="crt"><a href="{{url_for('user.login')}}" ><button class="but">LOG IN</button></a></li>
+        {%endif%}
+      </ul>
+    </nav>
+    <div>
 <link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
 
 {# Owner-only controls (edit links, logout, create post).
