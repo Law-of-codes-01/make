@@ -4,7 +4,7 @@
     <form method="POST" enctype="multipart/form-data" action="">
         {{ form.hidden_tag() }}
         <div class="imgdiv">
-            <img class="image" src="{{img_f}}">
+            <img class="image" src="{{img_f}}" width="100">
         </div>
         <div class="imgdiv">
             {{form.pic.label()}} {{form.pic()}}
