@@ -1,0 +1,247 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --ink: #14213d;          /* text, aside background */
+  --muted: #5b6577;        /* secondary text */
+  --line: #d5dae3;         /* borders */
+  --surface: #ffffff;
+  --page: #f5f7fa;
+  --accent: #1f5eff;       /* primary action */
+  --accent-dark: #1748c7;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+  --radius: 8px;
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--page);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Layout ---------- */
+.login {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.login__panel {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.login__aside {
+  background: var(--ink);
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  padding: 64px;
+}
+
+.login__aside blockquote { margin: 0; max-width: 28em; }
+.login__aside p {
+  margin: 0 0 16px;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.login__aside footer { color: #b8c2d6; font-size: 0.95rem; }
+
+/* ---------- Brand + headings ---------- */
+.login__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.login__logo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.login__name { font-weight: 700; font-size: 1.125rem; }
+
+.login__title {
+  margin: 0 0 6px;
+  font-size: 1.625rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.login__subtitle { margin: 0 0 28px; color: var(--muted); }
+
+/* ---------- Form ---------- */
+.form { display: grid; gap: 20px; }
+
+.field { display: grid; gap: 6px; }
+.field__row { display: flex; justify-content: space-between; align-items: baseline; }
+
+label { font-size: 0.9rem; font-weight: 600; }
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input::placeholder { color: #98a1b3; }
+input:hover { border-color: #aeb7c7; }
+
+input:focus-visible,
+.btn:focus-visible,
+.link:focus-visible,
+.password__toggle:focus-visible {
+  outline: 3px solid rgba(31, 94, 255, 0.35);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+/* Invalid state: add aria-invalid="true" from your validation code */
+input[aria-invalid="true"] { border-color: var(--danger); }
+
+/* Password field with show/hide button */
+.password { position: relative; }
+.password input { padding-right: 68px; }
+.password__toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.password__toggle:hover { color: var(--accent-dark); }
+
+/* Checkbox */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+}
+.check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+/* Button */
+.btn {
+  height: 46px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn:hover { background: var(--accent-dark); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+/* Links */
+.link {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.link:hover { text-decoration: underline; }
+
+/* Error alert */
+.alert {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-radius: var(--radius);
+}
+.alert[hidden] { display: none; }
+
+.login__footer { margin: 28px 0 0; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 880px) {
+  .login { grid-template-columns: 1fr; }
+  .login__aside { display: none; }
+  .login__panel { max-width: 440px; padding: 32px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* ---------- Sign up additions ---------- */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 1fr; }
+}
+
+.hint { margin: 0; font-size: 0.8rem; color: var(--muted); }
+
+.error { margin: 0; font-size: 0.85rem; color: var(--danger); }
+.error[hidden] { display: none; }
+
+/* Password strength meter: the script sets data-score from 0 to 4 */
+.strength {
+  height: 4px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.strength span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--danger);
+  transition: width 0.2s, background 0.2s;
+}
+.strength span[data-score="1"] { width: 25%; background: var(--danger); }
+.strength span[data-score="2"] { width: 50%; background: #d97706; }
+.strength span[data-score="3"] { width: 75%; background: #2f9e44; }
+.strength span[data-score="4"] { width: 100%; background: #1b7a34; }
+
+.check { align-items: flex-start; }
+.check input { margin-top: 2px; }
+.check .link { font-size: inherit; }

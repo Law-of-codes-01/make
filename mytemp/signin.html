@@ -1,28 +1,51 @@
 {%extends 'layout.html'%}
 {%block layout%}
-    <form method="post" action="">
+
+    <main class="login">
+    <section class="login__panel" aria-label="Sign in">
+      <div class="login__brand">
+        <span class="login__logo" aria-hidden="true">L</span>
+        <span class="login__name">LetsGo</span>
+      </div>
+
+      <h1 class="login__title">Sign in to your account</h1>
+      <p class="login__subtitle">Enter your details to continue.</p>
+
+      <!-- Show this when the server returns an error -->
+      <p class="alert" role="alert" hidden>The email or password is incorrect. Try again.</p>
+    <form class="form" action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <h2>Log in</h2>
         <div>
             {{form.useremail(placeholder='Email address')}}
         </div>
         <hr>
-        <div>
+        <div class="field__row">
+
+        </div>
+        <div class="password">
             {{form.userpass(placeholder='Password')}}
+            <button class="password__toggle" type="button" aria-controls="password"
+            aria-pressed="false">Show</button>
         </div>
         <hr>
-        <div>
-            {{form.remember.label(placeholder='Password')}}
+        <div >
+            <div class="check">
+                {{form.remember.label(placeholder='Password')}}
+                <span>Keep me signed in on this device</span>
+            </div>
+            
             {{form.remember(placeholder='Password')}}
         </div>
         <hr>
-        <div class="submit">
-            {{form.submit()}}
+        <div class="btn" type="submit">
+            <button class="btn" type="submit">{{form.submit()}}</button>
+            
         </div>
-        <div class="submit">
+        <div class="link">
             <a href="{{url_for('user.token_req')}}">Forgot Password</a>
         </div>
-        <div><a href="{{url_for('user.create')}}">Create Account</a></div>
+        <div class="link"><a href="{{url_for('user.create')}}">Create Account</a></div>
             {%if form.useremail.errors%}
                 <div class="red">
                     {%for error in form.useremail.errors%}
@@ -30,5 +53,13 @@
                     {%endfor%}
                 </div>
             {%endif%}
+    <aside class="login__aside" aria-hidden="true">
+      <blockquote>
+        <p>Everything our team needs, in one place and always up to date.</p>
+        <footer>LetsGo with you</footer>
+      </blockquote>
+    </aside>
+
+   
     </form>
 {%endblock%}

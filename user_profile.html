@@ -1,0 +1,85 @@
+<!-- {%extends 'layout.html'%}
+{%block layout%}
+    <div><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a></div>
+
+    <form  method="POST" enctype="multipart/form-data" action="">
+        <div class="imgdiv">
+            <img class="image" src="{{img_f}}">
+        </div>
+        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}"><button type="button">Edit Profile</button></a></div>
+
+        <div class="imgdiv">
+            <h3>{{user.firstname}} {{user.lastname}}</h3>
+
+            <h4>{{user.email}}</h4>
+            {%if phone ==None%}
+                <h4>Connect with whatsapp</h4>
+                <a href='{{url_for("user.contact",username=user.username)}}'><p>Link your whatsapp</p></a>
+
+            {%else%}
+                <a href='{{whatsapp}}'><p>{{phone}}</p></a>
+                <a href="{{url_for('user.editcontact')}}"><p>Edit</p></a>
+            {%endif%}
+
+            <div><h5>Creator. 100k followers. 123k posts.</h5> </div>
+        </div>
+        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Change Name or Email Addresss</a></div>
+        <div class="imgdiv">
+            <h3>
+                BIO:software dv from havard
+            </h3>
+        </div>
+        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Edit Bio</a></div>
+
+        <hr>
+        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Update Prsonal details</a></div>
+        <div>
+            <p>PERSONAL DETAILS</p>
+            <div class="list">
+                <ul class="lst">
+                    <li>Location:{{user.country}}</li>
+                    <li>DOB:{{user.country}}</li>
+                    <li>Relationship:Single</li>
+                    <li>Country:{{user.country}}</li>
+                    <li>Gender:{{user.gender}}</li>
+                    <li>.....</li>
+                    <li>.......</li>
+                </ul>
+            </div>
+        </div>
+        <div class="pst">
+            <p>POSTS</p>
+
+        </div>
+    <Div>
+        <li class="crt"><a href='{{url_for("post.cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
+
+    </Div>
+
+    <hr>
+    {%for p in posts%}
+        <div>
+            <img src="{{  p.author.user_img }}" width="50">
+            <a href="{{ url_for('user.profile', username=posts[0].author.username) }}">{{ p.author.username }}</a>
+
+        </div>
+    
+        {% if p.media_path.split('.')[-1] == "mp4" %}
+            
+            <video controls width="400">
+                <source src="{{p.media_type}}">
+            </video>
+        {%elif p.media_path.split('.')[-1]=="mp3"%}
+            <video controls width="400">
+                <source src="{{p.media_type}}" type="video/mp4">
+            </video>
+        {% else%}
+            <img src="{{p.media_type}}" width="400">
+        {% endif %}
+
+        <a href="{{url_for('post.mainpost',id=p.id)}}"><h3>{{ p.title }}</h3></a>
+        <p>{{ p.content }}</p>
+        <hr>
+    {%endfor%}
+    </form>
+{%endblock%} -->

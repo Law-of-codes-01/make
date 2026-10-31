@@ -1,85 +1,195 @@
-{%extends 'layout.html'%}
-{%block layout%}
-    <div><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a></div>
 
-    <form  method="POST" enctype="multipart/form-data" action="">
-        <div class="imgdiv">
-            <img class="image" src="{{img_f}}">
+
+{% extends 'layout.html' %}
+{% block layout %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
+
+{# Owner-only controls (edit links, logout, create post).
+   Falls back to True if Flask-Login's current_user is not available in this app. #}
+{% set is_owner = (current_user is not defined) or (current_user.is_authenticated and current_user.id == user.id) %}
+
+<div class="profile-page">
+
+  {% if is_owner %}
+  <div class="page-actions">
+    <a class="btn btn--outline btn--sm" href="{{ url_for('user.logout') }}">Logout</a>
+  </div>
+  {% endif %}
+
+  <!-- ===== Profile header ===== -->
+  <section class="card hero" aria-label="Profile overview">
+    <div class="hero__cover" aria-hidden="true"></div>
+
+    <div class="hero__body">
+      <div class="avatar">
+        <span class="avatar__initials" aria-hidden="true">{{ ((user.firstname or '')[:1] ~ (user.lastname or '')[:1])|upper }}</span>
+        <img class="avatar__img" src="{{ img_f }}"
+             alt="Profile photo of {{ user.firstname }} {{ user.lastname }}"
+             onerror="this.remove()">
+      </div>
+
+      <div class="hero__info">
+        <h1 class="hero__name">{{ user.firstname }} {{ user.lastname }}</h1>
+        <p class="hero__handle">@{{ user.username }}</p>
+        <p class="hero__email">{{ user.email }}</p>
+
+        <!-- Replace these hard-coded numbers with real values when you have them -->
+        <ul class="hero__stats">
+          <li><span class="badge">Creator</span></li>
+          <li><strong>100k</strong> followers</li>
+          <li><strong>123k</strong> posts</li>
+        </ul>
+
+        {% if is_owner %}
+        <a class="link" href="{{ url_for('user.editprofile') }}">Change name or email address</a>
+        {% endif %}
+      </div>
+
+      <div class="hero__actions">
+        {% if is_owner %}
+        <a class="btn" href="{{ url_for('user.editprofile') }}">Edit Profile</a>
+        {% endif %}
+        <button class="btn btn--outline" type="button" id="share-btn">Copy profile link</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="profile-grid">
+
+    <!-- ===== Left column ===== -->
+    <aside class="profile-side">
+
+      <section class="card" aria-labelledby="contact-title">
+        <div class="card__head">
+          <h2 class="card__title" id="contact-title">Contact</h2>
+          {% if phone and is_owner %}
+          <a class="link" href="{{ url_for('user.editcontact') }}">Edit</a>
+          {% endif %}
         </div>
-        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}"><button type="button">Edit Profile</button></a></div>
 
-        <div class="imgdiv">
-            <h3>{{user.firstname}} {{user.lastname}}</h3>
+        {% if not phone %}
+          {% if is_owner %}
+          <p class="muted">Connect with whatsapp</p>
+          <a class="btn btn--whatsapp btn--sm" href="{{ url_for('user.contact', username=user.username) }}">Link your whatsapp</a>
+          {% else %}
+          <p class="muted">No contact details added.</p>
+          {% endif %}
+        {% else %}
+          <a class="contact" href="{{ whatsapp }}" target="_blank" rel="noopener noreferrer">
+            <span class="contact__label">WhatsApp</span>
+            <span class="contact__value">{{ phone }}</span>
+          </a>
+        {% endif %}
+      </section>
 
-            <h4>{{user.email}}</h4>
-            {%if phone ==None%}
-                <h4>Connect with whatsapp</h4>
-                <a href='{{url_for("user.contact",username=user.username)}}'><p>Link your whatsapp</p></a>
-
-            {%else%}
-                <a href='{{whatsapp}}'><p>{{phone}}</p></a>
-                <a href="{{url_for('user.editcontact')}}"><p>Edit</p></a>
-            {%endif%}
-
-            <div><h5>Creator. 100k followers. 123k posts.</h5> </div>
+      <section class="card" aria-labelledby="bio-title">
+        <div class="card__head">
+          <h2 class="card__title" id="bio-title">Bio</h2>
+          {% if is_owner %}
+          <a class="link" href="{{ url_for('user.editprofile') }}">Edit Bio</a>
+          {% endif %}
         </div>
-        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Change Name or Email Addresss</a></div>
-        <div class="imgdiv">
-            <h3>
-                BIO:software dv from havard
-            </h3>
+        <!-- Hard-coded as in the original. Swap for {{ user.bio }} when your model has it. -->
+        <p class="bio">software dv from havard</p>
+      </section>
+
+      <section class="card" aria-labelledby="details-title">
+        <div class="card__head">
+          <h2 class="card__title" id="details-title">Personal details</h2>
+          {% if is_owner %}
+          <a class="link" href="{{ url_for('user.editprofile') }}">Update personal details</a>
+          {% endif %}
         </div>
-        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Edit Bio</a></div>
 
-        <hr>
-        <div class="imgdiv"><a href="{{url_for('user.editprofile')}}">Update Prsonal details</a></div>
-        <div>
-            <p>PERSONAL DETAILS</p>
-            <div class="list">
-                <ul class="lst">
-                    <li>Location:{{user.country}}</li>
-                    <li>DOB:{{user.country}}</li>
-                    <li>Relationship:Single</li>
-                    <li>Country:{{user.country}}</li>
-                    <li>Gender:{{user.gender}}</li>
-                    <li>.....</li>
-                    <li>.......</li>
-                </ul>
-            </div>
-        </div>
-        <div class="pst">
-            <p>POSTS</p>
+        <dl class="details">
+          <div class="details__row"><dt>Location</dt><dd>{{ user.country|default('Not set', true) }}</dd></div>
+          <!-- The original printed user.country for DOB. Change "dob" to your real field name. -->
+          <div class="details__row"><dt>Date of birth</dt><dd>{{ user.dob|default('Not set', true) }}</dd></div>
+          <div class="details__row"><dt>Relationship</dt><dd>Single</dd></div>
+          <div class="details__row"><dt>Country</dt><dd>{{ user.country|default('Not set', true) }}</dd></div>
+          <div class="details__row"><dt>Gender</dt><dd>{{ user.gender|default('Not set', true) }}</dd></div>
+        </dl>
+      </section>
+    </aside>
 
-        </div>
-    <Div>
-        <li class="crt"><a href='{{url_for("post.cpost")}}'><button class="'but" type="button">CREATE POST</button></a></li>
+    <!-- ===== Posts ===== -->
+    <section class="profile-main" aria-labelledby="posts-title">
+      <div class="section-head">
+        <h2 class="section-head__title" id="posts-title">Posts <span class="count">{{ posts|length }}</span></h2>
+        {% if is_owner %}
+        <a class="btn" href="{{ url_for('post.cpost') }}">Create post</a>
+        {% endif %}
+      </div>
 
-    </Div>
+      {% for p in posts %}
+      <article class="card post">
+        <header class="post__head">
+          <span class="mini-avatar">
+            <img src="{{ p.author.user_img }}" alt="" width="44" height="44" loading="lazy" onerror="this.remove()">
+          </span>
+          <a class="post__author" href="{{ url_for('user.profile', username=p.author.username) }}">{{ p.author.username }}</a>
+        </header>
 
-    <hr>
-    {%for p in posts%}
-        <div>
-            <img src="{{  p.author.user_img }}" width="50">
-            <a href="{{ url_for('user.profile', username=posts[0].author.username) }}">{{ p.author.username }}</a>
-
-        </div>
-    
-        {% if p.media_path.split('.')[-1] == "mp4" %}
-            
-            <video controls width="400">
-                <source src="{{p.media_type}}">
-            </video>
-        {%elif p.media_path.split('.')[-1]=="mp3"%}
-            <video controls width="400">
-                <source src="{{p.media_type}}" type="video/mp4">
-            </video>
-        {% else%}
-            <img src="{{p.media_type}}" width="400">
+        {% if p.media_path %}
+          {% set ext = p.media_path.rsplit('.', 1)[-1]|lower %}
+          {% if ext == 'mp4' %}
+          <video class="post__media" controls preload="metadata">
+            <source src="{{ p.media_type }}" type="video/mp4">
+          </video>
+          {% elif ext == 'mp3' %}
+          <audio class="post__audio" controls preload="none">
+            <source src="{{ p.media_type }}" type="audio/mpeg">
+          </audio>
+          {% else %}
+          <img class="post__media" src="{{ p.media_type }}" alt="{{ p.title }}" loading="lazy">
+          {% endif %}
         {% endif %}
 
-        <a href="{{url_for('post.mainpost',id=p.id)}}"><h3>{{ p.title }}</h3></a>
-        <p>{{ p.content }}</p>
-        <hr>
-    {%endfor%}
-    </form>
-{%endblock%}
+        <div class="post__body">
+          <a class="post__title" href="{{ url_for('post.mainpost', id=p.id) }}"><h3>{{ p.title }}</h3></a>
+          <p class="post__content">{{ p.content }}</p>
+          <a class="link" href="{{ url_for('post.mainpost', id=p.id) }}">Read more</a>
+        </div>
+      </article>
+      {% else %}
+      <div class="card empty">
+        <p class="empty__title">No posts yet</p>
+        <p class="muted">Posts will appear here once they are published.</p>
+        {% if is_owner %}
+        <a class="btn" href="{{ url_for('post.cpost') }}">Create your first post</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </section>
+
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('share-btn');
+    var toast = document.getElementById('toast');
+    if (!btn) return;
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('is-visible');
+      setTimeout(function () { toast.classList.remove('is-visible'); }, 2200);
+    }
+
+    btn.addEventListener('click', function () {
+      var url = window.location.href;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(
+          function () { showToast('Profile link copied'); },
+          function () { window.prompt('Copy this link:', url); }
+        );
+      } else {
+        window.prompt('Copy this link:', url);
+      }
+    });
+  })();
+</script>
+{% endblock %}

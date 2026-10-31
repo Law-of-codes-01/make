@@ -1,5 +1,15 @@
 {% extends 'layout.html' %}
 {% block layout %}
+    <main class="login">
+    <section class="login__panel" aria-label="Create account">
+      <div class="login__brand">
+        <span class="login__logo" aria-hidden="true">L</span>
+        <span class="login__name">LetsGo</span>
+      </div>
+
+      <h1 class="login__title">Create your account</h1>
+      <p class="login__subtitle">It takes less than a minute to get started.</p>
+
     <form method="post" action="">
         {{ form.hidden_tag() }}
         <div class='create'>
