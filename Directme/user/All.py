@@ -60,7 +60,7 @@ def logout():
 def profile(username):
     cont=MyContact_form()
     user = User.query.filter_by(username=username).first_or_404()
-    image_file =f"{user.user_img}"
+    image_file =user.user_img
     if user:
         # if user.whatsappnum==None or user.whatsapp==None:
         #     return redirect(url_for('user.contact',username=username))
@@ -98,7 +98,7 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
-        image_file=f"{current_user.user_img}"
+        image_file=current_user.user_img
         print(image_file)
         return render_template("edtprofile.html",form=form,img_f=image_file)
 
