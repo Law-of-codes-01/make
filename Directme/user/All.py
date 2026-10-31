@@ -83,8 +83,9 @@ def editprofile():
         if form.validate_on_submit():
             if form.pic.data:
                 pcs=save_pic(form.pic.data)
-                db.session.commit()
+                
                 current_user.user_img=pcs
+                db.session.commit()
             current_user.username=form.username.data
             current_user.email=form.email.data
             current_user.bio=form.bio.data
