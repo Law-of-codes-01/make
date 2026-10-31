@@ -70,7 +70,6 @@ def profile(username):
                 .filter_by(user_id=user.id)
                 .order_by(Post.date_posted.desc())
                 .all())
-        print(image_file)
         return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
     return render_template("profile.html", user=user, img_f=image_file, posts=post,cont=cont,phone=whatsappnum,whatsapp=whatsapp)
 
