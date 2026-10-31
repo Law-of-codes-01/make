@@ -23,7 +23,7 @@
     <div class="hero__body">
       <div class="avatar">
         <span class="avatar__initials" aria-hidden="true">{{ ((user.firstname or '')[:1] ~ (user.lastname or '')[:1])|upper }}</span>
-        <img class="avatar__img" src="{{ user.img_f }}"
+        <img class="avatar__img" src="{{ img_f }}"
              alt="Profile photo of {{ user.firstname }} {{ user.lastname }}"
              onerror="this.remove()">
       </div>
