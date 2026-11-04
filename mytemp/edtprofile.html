@@ -1,71 +1,170 @@
-{%extends 'layout.html'%}
-{%block layout%}
-  <div >
-    <nav>
-      {%if current_user.is_authenticated%}
-        <ul>
-          <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
-          <li class="crt"><a href='{{url_for("user.profile",username=current_user.username)}}'><button class="'but">PROFILE</button></a></li>
-          <li class="crt"><a href='{{url_for("user.contact",username=current_user.username)}}'><button class="'but">CONTACT</button></a></li>
-          <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
-          <li class="crt"><a href="{{url_for('user.logout')}}" ><button class="but">LOG OUT</button></a></li>
-        </ul>
-      {%else%}
-        <ul>
-          <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
-          <li class="crt"><a href='{{url_for("user.create")}}'><button class="'but">CREATE ACCOUNT</button></a></li>   
-          <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
-          <li class="crt"><a href="{{url_for('user.login')}}" ><button class="but">LOG IN</button></a></li>
-        </ul>
-      {%endif%}
-    </nav>
+{% extends 'layout.html' %}
+{% block layout %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='edit_profile.css') }}">
+
+{# Renders label + input + hint + validation errors for any WTForms field #}
+{% macro render_field(f, label=None, hint=None) %}
+  <div class="field{% if f.errors %} field--error{% endif %}">
+    {% if label %}<label for="{{ f.id }}">{{ label }}</label>{% else %}{{ f.label() }}{% endif %}
+    {% if f.errors %}
+      {{ f(class_='input is-invalid', **kwargs) }}
+    {% else %}
+      {{ f(class_='input', **kwargs) }}
+    {% endif %}
+    {% if hint and not f.errors %}<p class="field__hint">{{ hint }}</p>{% endif %}
+    {% for e in f.errors %}<p class="field__error" role="alert">{{ e }}</p>{% endfor %}
+  </div>
+{% endmacro %}
+
+<div class="profile-page edit-page">
+
+  <div class="edit-top">
+    <a class="link" href="{{ url_for('user.profile', username=current_user.username) }}">&larr; Back to profile</a>
+    <a class="btn btn--outline btn--sm" href="{{ url_for('user.logout') }}">Logout</a>
+  </div>
+
+  <header class="edit-head">
+    <h1 class="edit-title">Edit profile</h1>
+    <p class="muted">Update your photo, account details and personal information.</p>
+  </header>
+
+  <form class="edit-form" id="edit-form" method="POST" enctype="multipart/form-data" action="">
+    {{ form.hidden_tag() }}
+
+    <!-- ===== Photo ===== -->
+    <section class="card" aria-labelledby="photo-title">
+      <h2 class="card__title" id="photo-title">Profile photo</h2>
+
+      <div class="photo-row">
+        <div class="avatar avatar--edit">
+          <span class="avatar__initials" aria-hidden="true">{{ (current_user.username or '?')[:1]|upper }}</span>
+          {# img_f is a full URL (Cloudinary) after an upload, otherwise just "default.jpg" #}
+          {% set avatar_src = img_f if (img_f and img_f.startswith('http')) else url_for('static', filename='default.jpg') %}
+          <img class="avatar__img" id="avatar-preview" src="{{ avatar_src }}" alt="Current profile photo"
+               onerror="this.style.display='none'">
+        </div>
+
+        <div class="photo-row__controls field{% if form.pic.errors %} field--error{% endif %}">
+          {{ form.pic.label() }}
+          {{ form.pic(class_='file-input', accept='image/*') }}
+          {% if not form.pic.errors %}<p class="field__hint">JPG or PNG, up to 5 MB. A square image works best.</p>{% endif %}
+          {% for e in form.pic.errors %}<p class="field__error" role="alert">{{ e }}</p>{% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Account ===== -->
+    <section class="card" aria-labelledby="account-title">
+      <h2 class="card__title" id="account-title">Account</h2>
+
+      <div class="form-grid">
+        {{ render_field(form.username, autocomplete='username') }}
+        {{ render_field(form.email, autocomplete='email') }}
+      </div>
+
+      <!-- Display only, as in the original -->
+      <ul class="hero__stats edit-stats">
+        <li><span class="badge">Creator</span></li>
+        <li><strong>100k</strong> followers</li>
+        <li><strong>123k</strong> posts</li>
+      </ul>
+    </section>
+
+    <!-- ===== Bio ===== -->
+    <section class="card" aria-labelledby="bio-title">
+      <h2 class="card__title" id="bio-title">About you</h2>
+      {{ render_field(form.bio, rows=5, placeholder='Tell people a little about yourself.') }}
+      <p class="field__hint field__hint--right"><span id="bio-count">0</span> characters</p>
+    </section>
+
+    <!-- ===== Personal details ===== -->
+    <section class="card" aria-labelledby="details-title">
+      <h2 class="card__title" id="details-title">Personal details</h2>
+
+      <div class="form-grid">
+        {{ render_field(form.country, label='Location') }}
+
+        {# The original used form.country twice (Location and DOB). DOB only shows if your form has a "dob" field. #}
+        {% if form.dob is defined %}
+          {{ render_field(form.dob, label='Date of birth') }}
+        {% endif %}
+
+        {{ render_field(form.phone, label='Contact', hint='Include your country code, for example +234…', autocomplete='tel') }}
+
+        <div class="field">
+          <span class="field__label">Relationship</span>
+          <p class="static">Single</p>
+        </div>
+        <div class="field">
+          <span class="field__label">Country</span>
+          <p class="static">{{ current_user.country|default('Not set', true) }}</p>
+        </div>
+        <div class="field">
+          <span class="field__label">Gender</span>
+          <p class="static">{{ current_user.gender|default('Not set', true) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Save bar ===== -->
+    <div class="form-actions">
+      <a class="btn btn--outline" href="{{ url_for('user.profile', username=current_user.username) }}">Cancel</a>
+      {{ form.submit(class_='btn', id='save-btn') }}
     </div>
-    <div><a href="{{url_for('user.logout')}}" ><button class="'but">LOGOUT</button></a></div>
-    <form method="POST" enctype="multipart/form-data" action="">
-        {{ form.hidden_tag() }}
-        <div class="imgdiv">
-            <img class="image" src="{{img_f}}" width="100">
-        </div>
-        <div class="imgdiv">
-            {{form.pic.label()}} {{form.pic()}}
-        </div>
+  </form>
 
-        <div class="imgdiv">
-            <h3>{{form.username.label()}} {{form.username()}}</h3>
-            <h4>{{form.email.label()}} {{form.email()}}</h4>
-            <div><h5>Creator. 100k followers. 123k posts.</h5> </div>
-        </div>
-        <div class="imgdiv">
-            <h3>
-                {{form.bio.label()}}{{form.bio()}}
-            </h3>
-        </div>
-        <hr>
-        <div>
-            <p>PERSONAL DETAILS</p>
-            <div class="list">
-                <ul class="lst">
-                    <li>Location:{{form.country()}}</li>
-                    <li>DOB:{{form.country()}}</li>
-                    <li>Relationship:Single</li>
-                    <li>Country:{{current_user.country}}</li>
-                    <li>Gender:{{current_user.gender}}</li>
-                    <li>Contact:{{form.phone()}}</li>
-                    <li>.......</li>
-                </ul>
-            </div>
-        </div>
-        <hr>
-        <div class="updiv">
-            {{form.submit()}}
-        </div>
-        <hr>
-        <div class="pst">
-            <p>POSTS</p>
-            <iframe>
-                Video
-            </iframe>
+  <!-- ===== Posts ===== -->
+  <section class="card posts-card" aria-labelledby="posts-title">
+    <div>
+      <h2 class="card__title" id="posts-title">Posts</h2>
+      <p class="muted">Manage what you have published.</p>
+    </div>
+    <div class="posts-card__actions">
+      <a class="btn btn--outline" href="{{ url_for('user.profile', username=current_user.username) }}">View my posts</a>
+      <a class="btn" href="{{ url_for('post.cpost') }}">Create post</a>
+    </div>
+  </section>
+</div>
 
-        </div>
-    </form>
-{%endblock%}
+<script>
+  (function () {
+    var form = document.getElementById('edit-form');
+    var bio = document.getElementById('bio');
+    var count = document.getElementById('bio-count');
+    var pic = document.getElementById('pic');
+    var preview = document.getElementById('avatar-preview');
+    var saveBtn = document.getElementById('save-btn');
+    var dirty = false;
+
+    // Live character counter for the bio
+    function updateCount() { if (bio && count) count.textContent = bio.value.length; }
+    if (bio) { bio.addEventListener('input', updateCount); updateCount(); }
+
+    // Photo preview + simple client-side check (the server must still validate)
+    if (pic) {
+      pic.addEventListener('change', function () {
+        var file = pic.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+          alert('Please choose an image (JPG or PNG) under 5 MB.');
+          pic.value = '';
+          return;
+        }
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = '';
+      });
+    }
+
+    // Warn before leaving with unsaved changes
+    form.addEventListener('input', function () { dirty = true; });
+    form.addEventListener('submit', function () {
+      dirty = false;
+      if (saveBtn) setTimeout(function () { saveBtn.disabled = true; saveBtn.value = 'Saving…'; }, 0);
+    });
+    window.addEventListener('beforeunload', function (e) {
+      if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    });
+  })();
+</script>
+{% endblock %}
