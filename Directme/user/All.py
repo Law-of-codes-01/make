@@ -2,7 +2,7 @@
 from flask_login import current_user,login_required,logout_user,login_user
 from __init__ import hsh
 from flask import render_template,redirect,url_for,flash,abort,Blueprint
-from Directme.user.form import MySignin_form,MySignup_form,EditProfile,MyReq_form,MyReset_form,MyContact_form
+from Directme.user.form import MySignin_form,MySignup_form,EditProfile,MyReq_form,MyReset_form,MyContact_form,MyEditContact_form
 from db_structure import db,User,Post
 from Directme.user.func import send_email,send_mail,save_pic
 from flask_login import login_required
@@ -156,7 +156,7 @@ def contact(username):
 def editcontact():
 
     if current_user.is_authenticated:
-        form=MyContact_form()
+        form=MyEditContact_form()
         if form.validate_on_submit():
             current_user.whatsappnum=form.phone.data
             current_user.whatsapp=form.whatsapp.data
