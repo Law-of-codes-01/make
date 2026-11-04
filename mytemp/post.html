@@ -14,6 +14,27 @@
 {# Create Post is shown to logged-in users; if Flask-Login is not available it is always shown #}
 {% set can_create = (current_user is not defined) or current_user.is_authenticated %}
 
+        <div>
+             <nav>
+              {%if current_user.is_authenticated%}
+                <ul>
+                  <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
+                  <li class="crt"><a href='{{url_for("user.profile",username=current_user.username)}}'><button class="'but">PROFILE</button></a></li>
+                  <li class="crt"><a href='{{url_for("user.contact",username=current_user.username)}}'><button class="'but">CONTACT</button></a></li>
+                  <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
+                  <li class="crt"><a href="{{url_for('user.logout')}}" ><button class="but">LOG OUT</button></a></li>
+                </ul>
+              {%else%}
+                <ul>
+                  <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
+                  <li class="crt"><a href='{{url_for("user.create")}}'><button class="'but">CREATE ACCOUNT</button></a></li>   
+                  <li class="crt"><a href=#google.com><button class="but">GOOGLE MAP</button></a></li>
+                  <li class="crt"><a href="{{url_for('user.login')}}" ><button class="but">LOG IN</button></a></li>
+                </ul>
+              {%endif%}
+            </nav>
+        </div>
+
 <div class="profile-page feed-page">
 
   <div class="section-head feed-head">
