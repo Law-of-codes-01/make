@@ -1053,3 +1053,106 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   .profile-page .form-actions { padding: 12px; }
   .profile-page .form-actions .btn { flex: 1; min-width: 0; }
 }
+
+
+/* =========================================================
+   Posts feed styles
+   Load AFTER user_profile.css. It reuses that file's tokens,
+   cards, buttons, avatar and post styles, and only adds what
+   the feed needs. Everything is scoped to .profile-page.
+   ========================================================= */
+
+/* ---------- Page frame ---------- */
+.profile-page.feed-page { max-width: 720px; }
+
+.profile-page .feed-head { margin-bottom: 20px; align-items: flex-end; }
+.profile-page .feed-title { font-size: 1.65rem; letter-spacing: -0.01em; line-height: 1.2; }
+.profile-page .feed-head .muted { margin-top: 4px; }
+
+.profile-page .feed { display: grid; gap: 20px; }
+
+/* ---------- Post card extras ---------- */
+.profile-page .post { transition: box-shadow 0.15s, border-color 0.15s; }
+.profile-page .post:hover { border-color: #b9c2d3; box-shadow: 0 4px 18px rgba(20, 33, 61, 0.07); }
+
+.profile-page .post__actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+/* A button that looks like the text links */
+.profile-page .link--btn {
+  padding: 0;
+  font-family: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Keep tall photos from taking over the feed */
+.profile-page .post__media { max-height: 560px; }
+
+/* ---------- Pagination ---------- */
+.profile-page .pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.profile-page .pager__pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-page .pager__btn,
+.profile-page .pager__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: background 0.15s, border-color 0.15s;
+}
+.profile-page .pager__page { padding: 0; }
+
+.profile-page a.pager__btn:hover,
+.profile-page a.pager__page:hover { background: #eef1f6; border-color: #aeb7c7; }
+
+.profile-page .pager__page.is-current {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.profile-page .pager__btn.is-disabled { opacity: 0.45; cursor: not-allowed; }
+.profile-page .pager__gap { padding: 0 4px; color: var(--muted); }
+
+.profile-page .pager__btn:focus-visible,
+.profile-page .pager__page:focus-visible,
+.profile-page .link--btn:focus-visible {
+  outline: 3px solid rgba(31, 94, 255, 0.4);
+  outline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .profile-page .feed-head { align-items: center; }
+  .profile-page .pager { flex-wrap: wrap; justify-content: center; }
+  .profile-page .pager__pages { order: -1; width: 100%; justify-content: center; }
+  .profile-page .pager__btn { flex: 1; }
+}
