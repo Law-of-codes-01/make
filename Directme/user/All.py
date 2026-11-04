@@ -98,9 +98,9 @@ def editprofile():
         form.bio.data=current_user.bio
         form.country.data=current_user.country
         form.phone.data=current_user.phone
-        image_file=current_user.user_img
-        print(image_file)
-        return render_template("edtprofile.html",form=form,img_f=image_file)
+    image_file=current_user.user_img
+    print(image_file)
+    return render_template("edtprofile.html",form=form,img_f=image_file)
 
 @user.route('/passwordreset',methods=["GET","POST"])
 def token_req():
