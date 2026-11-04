@@ -1,0 +1,25 @@
+{#
+  Shared Cloudinary helpers. Import them in any template:
+    {% from '_media.html' import avatar_src, media_src %}
+
+  Change the cloud name or version here once, and every page updates.
+#}
+
+{# Avatar URL: full URL as-is, an uploaded filename -> Cloudinary, otherwise the static default #}
+{% macro avatar_src(name) -%}
+{%- set CLD = "https://res.cloudinary.com/gy6px9jz" -%}
+{%- set VER = "v1792815857" -%}
+{%- if name and name.startswith('http') -%}{{ name }}
+{%- elif name and name != 'default.jpg' -%}{{ CLD ~ '/image/upload/' ~ VER ~ '/post_file/' ~ name }}
+{%- else -%}{{ url_for('static', filename='default.jpg') }}
+{%- endif -%}
+{%- endmacro %}
+
+{# Post media URL. kind is "image" or "video" (Cloudinary stores audio under "video") #}
+{% macro media_src(kind, name) -%}
+{%- set CLD = "https://res.cloudinary.com/gy6px9jz" -%}
+{%- set VER = "v1792815857" -%}
+{%- if name and name.startswith('http') -%}{{ name }}
+{%- else -%}{{ CLD ~ '/' ~ kind ~ '/upload/' ~ VER ~ '/post_file/' ~ name }}
+{%- endif -%}
+{%- endmacro %}
