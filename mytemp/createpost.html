@@ -1,9 +1,6 @@
 {%extends 'layout.html'%}
 {%block layout%}
-
-<form method="POST" enctype="multipart/form-data" action="">
-    {{ form.hidden_tag() }}
-            <div>
+        <div>
              <nav>
                 <ul>
                   <li class="crt"><a href='{{url_for("main.home")}}'><button class="'but" >HOME</button></a></li>
@@ -14,6 +11,9 @@
                 </ul>
             </nav>
         </div>
+<form method="POST" enctype="multipart/form-data" action="">
+    {{ form.hidden_tag() }}
+
     <div>
         <div>
             {{form.title.label()}}
