@@ -1,57 +1,139 @@
 {% extends 'layout.html' %}
 {% block layout %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='post_feed.css') }}">
 
-{% set CLD = "https://res.cloudinary.com/gy6px9jz" %}
-{% set VER = "v1792815857" %}
+{% from '_media.html' import avatar_src, media_src %}
 
-<div>
-    <a href="{{ url_for('post.cpost') }}" class="but">CREATE POST</a>
-</div>
-<hr>
+{# Builds a link to another page of the same feed: /posts?page=3 #}
+{% macro page_url(n) -%}
+{%- set args = request.view_args or {} -%}
+{{ url_for(request.endpoint, page=n, **args) }}
+{%- endmacro %}
 
-{% for p in post.items %}
+{# Create Post is shown to logged-in users; if Flask-Login is not available it is always shown #}
+{% set can_create = (current_user is not defined) or current_user.is_authenticated %}
+
+<div class="profile-page feed-page">
+
+  <div class="section-head feed-head">
     <div>
-        <img src="{{ CLD ~ '/image/upload/' ~ VER ~ '/post_file/' ~ p.author.user_img }}" width="50" alt="">
-        <a href="{{ url_for('user.profile', username=p.author.username) }}">
-            <p>{{ p.author.username }}</p>
-        </a>
+      <h1 class="feed-title">Posts</h1>
+      <p class="muted">Latest posts from the community.</p>
     </div>
+    {% if can_create %}
+    <a class="btn" href="{{ url_for('post.cpost') }}">Create post</a>
+    {% endif %}
+  </div>
 
-    {% if p.media_path == "mp4" %}
-        <video controls width="400">
-            <source src="{{ CLD ~ '/video/upload/' ~ VER ~ '/post_file/' ~ p.media_type }}">
+  <div class="feed">
+    {% for p in post.items %}
+    <article class="card post">
+
+      <header class="post__head">
+        <span class="mini-avatar">
+          <img src="{{ avatar_src(p.author.user_img) }}" alt="" width="44" height="44" loading="lazy"
+               onerror="this.remove()">
+        </span>
+        <a class="post__author" href="{{ url_for('user.profile', username=p.author.username) }}">{{ p.author.username }}</a>
+      </header>
+
+      {# media_path holds the file type (mp4, mp3, m4a, ...), media_type holds the file name #}
+      {% if p.media_type %}
+        {% set ext = (p.media_path or '')|lower|replace('.', '') %}
+        {% if ext == 'mp4' %}
+        <video class="post__media" controls preload="metadata">
+          <source src="{{ media_src('video', p.media_type) }}" type="video/mp4">
         </video>
-    {% elif p.media_path == "mp3" or p.media_path == "m4a" %}
-        <audio controls>
-            <source src="{{ CLD ~ '/video/upload/' ~ VER ~ '/post_file/' ~ p.media_type }}">
+        {% elif ext == 'mp3' or ext == 'm4a' %}
+        <audio class="post__audio" controls preload="none">
+          <source src="{{ media_src('video', p.media_type) }}" type="{{ 'audio/mp4' if ext == 'm4a' else 'audio/mpeg' }}">
         </audio>
+        {% else %}
+        <img class="post__media" src="{{ media_src('image', p.media_type) }}" alt="{{ p.title }}" loading="lazy">
+        {% endif %}
+      {% endif %}
+
+      <div class="post__body">
+        <a class="post__title" href="{{ url_for('post.mainpost', id=p.id) }}"><h3>{{ p.title }}</h3></a>
+        <p class="post__content">{{ p.content }}</p>
+
+        <div class="post__actions">
+          <a class="link" href="{{ url_for('post.mainpost', id=p.id) }}">Read more</a>
+          <button class="link link--btn" type="button"
+                  data-copy="{{ url_for('post.mainpost', id=p.id, _external=True) }}">Copy link</button>
+        </div>
+      </div>
+    </article>
     {% else %}
-        <img src="{{ CLD ~ '/image/upload/' ~ VER ~ '/post_file/' ~ p.media_type }}" width="400" alt="">
+    <div class="card empty">
+      <p class="empty__title">No posts yet</p>
+      <p class="muted">Be the first to share something.</p>
+      {% if can_create %}
+      <a class="btn" href="{{ url_for('post.cpost') }}">Create post</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if post.pages > 1 %}
+  <nav class="pager" aria-label="Pagination">
+    {% if post.has_prev %}
+    <a class="pager__btn" href="{{ page_url(post.prev_num) }}" rel="prev">&larr; Previous</a>
+    {% else %}
+    <span class="pager__btn is-disabled" aria-disabled="true">&larr; Previous</span>
     {% endif %}
 
-    <a href="{{ url_for('post.mainpost', id=p.id) }}"><h3>{{ p.title }}</h3></a>
-    <p>{{ p.content }}</p>
-    <hr>
-    {%for p in post.items%}
-        
-        <div>
-            <img src="{{ p.author.user_img}}" width="50">
-            <a href='{{url_for("user.profile",username=p.author.username)}}'><p>{{ p.author.username }}</p></a>
-
-        </div>
-    
-        {% if p.media_path == "mp4" %}
-            
-            <video controls width="400">
-                <source src="{{p.media_type}}">
-            </video>
-        {%elif p.media_path=="mp3" or p.media_path=="m4a" %}
-            <audio controls width="400">
-                <source src="{{p.media_type}}" type="video/mp4">
-            </audio>
-        {% else%}
-            <img src="{{p.media_type}}" width="400">
+    <ul class="pager__pages">
+      {% for n in post.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if n %}
+          <li>
+            {% if n == post.page %}
+            <span class="pager__page is-current" aria-current="page">{{ n }}</span>
+            {% else %}
+            <a class="pager__page" href="{{ page_url(n) }}">{{ n }}</a>
+            {% endif %}
+          </li>
+        {% else %}
+          <li class="pager__gap" aria-hidden="true">&hellip;</li>
         {% endif %}
-    {%endfor%}
-{%endfor%}
+      {% endfor %}
+    </ul>
+
+    {% if post.has_next %}
+    <a class="pager__btn" href="{{ page_url(post.next_num) }}" rel="next">Next &rarr;</a>
+    {% else %}
+    <span class="pager__btn is-disabled" aria-disabled="true">Next &rarr;</span>
+    {% endif %}
+  </nav>
+  {% endif %}
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var toast = document.getElementById('toast');
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('is-visible');
+      setTimeout(function () { toast.classList.remove('is-visible'); }, 2200);
+    }
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-copy]');
+      if (!btn) return;
+      var url = btn.getAttribute('data-copy');
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(
+          function () { showToast('Post link copied'); },
+          function () { window.prompt('Copy this link:', url); }
+        );
+      } else {
+        window.prompt('Copy this link:', url);
+      }
+    });
+  })();
+</script>
 {% endblock %}
